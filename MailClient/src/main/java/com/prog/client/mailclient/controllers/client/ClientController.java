@@ -206,6 +206,8 @@ public class ClientController {
                 switch (sectionName) {
                     case "inbox" -> {
                         model.deleteInbox(model.selectedEmail);
+                        model.selectedEmail.setIdEmail(response.getIdEmail());
+                        Platform.runLater(() -> model.trashedProperty().add(model.selectedEmail)); // add inbox email to trashed
                         if (model.inboxProperty().size() > 0) {
                             model.selectedEmail = model.inboxProperty().get(0);
                             updateDetailView(model.selectedEmail);
@@ -213,6 +215,8 @@ public class ClientController {
                     }
                     case "sent" -> {
                         model.deleteSent(model.selectedEmail);
+                        model.selectedEmail.setIdEmail(response.getIdEmail());
+                        Platform.runLater(() -> model.trashedProperty().add(model.selectedEmail));  // add sent email to trashed
                         if (model.sentProperty().size() > 0) {
                             model.selectedEmail = model.sentProperty().get(0);
                             updateDetailView(model.selectedEmail);

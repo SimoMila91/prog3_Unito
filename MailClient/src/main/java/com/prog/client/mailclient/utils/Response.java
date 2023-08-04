@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Response implements Serializable {
 	private boolean success;
 	private String message;
+	private long idEmail;
 	private ArrayList<SerializableEmail> inbox;
 	private ArrayList<SerializableEmail> sent;
 	private ArrayList<SerializableEmail> trashed;
@@ -13,6 +14,12 @@ public class Response implements Serializable {
 	public Response(boolean success, String message) {
 		this.success = success;
 		this.message = message;
+	}
+
+	public Response (boolean success, String message, long idEmail) {
+		this.success = success;
+		this.message = message;
+		this.idEmail = idEmail;
 	}
 
 	public Response(boolean success, String message, ArrayList<SerializableEmail> inbox, ArrayList<SerializableEmail> sent, ArrayList<SerializableEmail> trashed) {
@@ -44,6 +51,8 @@ public class Response implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	public void setIdEmail(long idEmail) { this.idEmail = idEmail; }
+	public long getIdEmail() { return idEmail; }
 
 	public ArrayList<SerializableEmail> getInbox() {
 		return inbox;

@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ccd3b14-c2a6-420f-92c5-1704d3bce807" name="Changes" comment="" />
+    <list default="true" id="7ccd3b14-c2a6-420f-92c5-1704d3bce807" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MailClient/src/main/java/com/prog/client/mailclient/controllers/client/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/MailClient/src/main/java/com/prog/client/mailclient/controllers/client/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MailClient/src/main/java/com/prog/client/mailclient/controllers/client/NewEmailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/MailClient/src/main/java/com/prog/client/mailclient/controllers/client/NewEmailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MailClient/src/main/java/com/prog/client/mailclient/utils/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/MailClient/src/main/java/com/prog/client/mailclient/utils/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MailServer/src/main/java/com/prog/server/mailserver/controller/MailServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/MailServer/src/main/java/com/prog/server/mailserver/controller/MailServerController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,10 +24,14 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2QeZEFpuojsCtUhvlRfhm3UOSSb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -94,11 +104,22 @@
       <workItem from="1685866234068" duration="9350000" />
       <workItem from="1687683381987" duration="1560000" />
       <workItem from="1690879899243" duration="10885000" />
-      <workItem from="1691048462947" duration="9772000" />
+      <workItem from="1691048462947" duration="18285000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

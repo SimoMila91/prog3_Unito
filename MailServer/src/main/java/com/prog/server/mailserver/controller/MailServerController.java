@@ -1,11 +1,14 @@
 package com.prog.server.mailserver.controller;
 
+import com.prog.client.mailclient.models.Email;
 import com.prog.client.mailclient.utils.SerializableEmail;
 import com.prog.server.mailserver.model.Server;
 
 import com.prog.client.mailclient.utils.Request;
 import com.prog.client.mailclient.utils.Response;
 import com.prog.server.mailserver.model.User;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -128,7 +131,7 @@ public class MailServerController {
                         objectOutputStream.flush();
                     }
                     case "update" -> {
-                        response = (Response) sendNewEmail(request);
+                        response = (Response) updateClient(request);
                         objectOutputStream.writeObject(response);
                         objectOutputStream.flush();
                     }
@@ -170,10 +173,9 @@ public class MailServerController {
         /**
          * in case of update I'm going to check if there are new Emails to send.
          * lastInbox >= all inbox emails ? false : true
-         *
          */
 
-        private Response sendNewEmail(Request request) {
+        private Response updateClient(Request request) {
 
             long lastInbox = request.getLastInbox();
             User user = server.getUser(request.getEmailAddress());
@@ -235,6 +237,7 @@ public class MailServerController {
 
         private Response sendEmail(Request request) {
             SerializableEmail email = (SerializableEmail) request.getEmail();
+            long newIdSent = 0;
 
             String[] users = email.getReceiver().split(",");
             ArrayList<User> receivers = new ArrayList<>();
@@ -248,9 +251,11 @@ public class MailServerController {
             }
 
             for (User usr : receivers) {
+                email.setIdEmail(createNewId(usr.getInbox()));
                 usr.getInbox().add(email);
             }
             User sender = server.getUser(email.getSender());
+            newIdSent = createNewId(sender.getSent());
             sender.getSent().add(email);
             try {
                 server.saveToDatabase();
@@ -258,12 +263,13 @@ public class MailServerController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            return new Response(true, "Email successfully sent");
+            return new Response(true, "Email successfully sent", newIdSent);
         }
 
         private Response deleteEmail(Request request) {
             try {
                 String message;
+                long idTrashed = 0; // in case of sent or inbox we have to add email in trashed, so I'll return idTrashed to client
                 SerializableEmail emailToDelete = (SerializableEmail) request.getEmail();
                 System.out.println(emailToDelete.getIdEmail());
                 User user = server.getUser(request.getEmailAddress());
@@ -290,9 +296,11 @@ public class MailServerController {
                         }
                     }
                     message = "Email successfully deleted from trashed";
+
                 }
                 if (section.equals("inbox") || section.equals("sent")) {
-                    emailToDelete.setIdEmail(getLargestIdTrashed(user.getTrashed())); // email could be both in send and inbox so change id for trashed
+                    idTrashed = createNewId(user.getTrashed());
+                    emailToDelete.setIdEmail(idTrashed); // email could be both in send and inbox so change id for trashed
                     user.getTrashed().add(emailToDelete);
                     message = "Email added to trashed";
                 }
@@ -302,18 +310,24 @@ public class MailServerController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return new Response(true, message);
+                if (section.equals("inbox") || section.equals("sent")) {
+                    return new Response(true, message, idTrashed);
+                } else {
+                    return new Response(true, message);
+                }
+
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return new Response(false, "Internal server error. Please try later");
             }
         }
 
-        private long getLargestIdTrashed(ArrayList<SerializableEmail> list) {
+        private long createNewId(ArrayList<SerializableEmail> list) {
             long id = 0;
             for (SerializableEmail email : list) {
                 id = Math.max(email.getIdEmail(), id);
             }
+            id++;
             return id;
         }
 
