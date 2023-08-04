@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MailClient/MailClient.iml" filepath="$PROJECT_DIR$/MailClient/MailClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MailServer/MailServer.iml" filepath="$PROJECT_DIR$/MailServer/MailServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Prog3_Milanesio_Musso_Andaloro.iml" filepath="$PROJECT_DIR$/Prog3_Milanesio_Musso_Andaloro.iml" />
+    </modules>
+  </component>
+</project>

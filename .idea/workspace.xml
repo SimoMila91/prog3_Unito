@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7ccd3b14-c2a6-420f-92c5-1704d3bce807" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="JavaFXApplication" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2QeZEFpuojsCtUhvlRfhm3UOSSb" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "19",
+    "last_opened_file_path": "C:/Users/simom/IdeaProjects/Prog3_Milanesio_Musso_Andaloro",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.43009478",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\simom\IdeaProjects\Prog3_Milanesio_Musso_Andaloro\MailClient\src\main\resources\com\prog\client\mailclient\styles" />
+      <recent name="C:\Users\simom\IdeaProjects\Prog3_Milanesio_Musso_Andaloro\MailClient\src\main\resources\com\prog\client\mailclient" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\simom\IdeaProjects\Prog3_Milanesio_Musso_Andaloro\MailServer\src\main\java\com\prog\server\mailserver\model" />
+      <recent name="C:\Users\simom\IdeaProjects\Prog3_Milanesio_Musso_Andaloro\MailServer\src\main\java\com\prog\server\mailserver\controller" />
+      <recent name="C:\Users\simom\IdeaProjects\Prog3_Milanesio_Musso_Andaloro\MailServer\src\main\resources\com\prog\server\mailserver\database" />
+      <recent name="C:\Users\simom\IdeaProjects\Prog3_Milanesio_Musso_Andaloro\MailServer\src\main\resources\com\prog\server\mailserver" />
+      <recent name="C:\Users\simom\IdeaProjects\Prog3_Milanesio_Musso_Andaloro\MailClient\src\main\resources\com\prog\client\mailclient" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Client">
+    <configuration name="Client" type="Application" factoryName="Application" singleton="false">
+      <option name="ALTERNATIVE_JRE_PATH" value="19" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.prog.client.mailclient.App" />
+      <module name="MailClient" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="19" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.prog.server.mailserver.App" />
+      <module name="MailServer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Client" />
+      <item itemvalue="Application.Server" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7ccd3b14-c2a6-420f-92c5-1704d3bce807" name="Changes" comment="" />
+      <created>1685715895650</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1685715895650</updated>
+      <workItem from="1685715896825" duration="5665000" />
+      <workItem from="1685721668009" duration="7775000" />
+      <workItem from="1685866234068" duration="9350000" />
+      <workItem from="1687683381987" duration="1560000" />
+      <workItem from="1690879899243" duration="10885000" />
+      <workItem from="1691048462947" duration="9772000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

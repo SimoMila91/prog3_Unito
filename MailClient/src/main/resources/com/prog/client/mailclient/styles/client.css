@@ -1,0 +1,36 @@
+.client-navbar {
+    -fx-background-color: #132a13 !important;
+    -fx-font-weight: 600;
+    -fx-border-style: hidden hidden solid hidden !important;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.client-container {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.new-mail-cont {
+    -fx-border-style: solid hidden hidden hidden;
+    -fx-border-color: #132a13;
+    -fx-border-width: 2px;
+}
+
+.split-pane-cont {
+    -fx-border-style: hidden solid hidden hidden;
+    -fx-border-color: #132a13;
+    -fx-border-width: 2px;
+}
+
+.email-controls {
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-color: #132a13;
+    -fx-border-width: 2px;
+}
+
+
+.img-style {
+    -fx-background-radius:5;
+}
