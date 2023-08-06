@@ -13,7 +13,9 @@ public class User {
     private final SimpleListProperty<Email> sent;
     private final SimpleListProperty<Email> trashed;
     private final StringProperty emailAddress;
-
+    private final StringProperty sentCounter;
+    private final StringProperty inboxCounter;
+    private final StringProperty trashedCounter;
     public Email selectedEmail;
     public Email writeEmail;
     public Email emptyEmail;
@@ -23,8 +25,23 @@ public class User {
         this.sent = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.trashed = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.emailAddress = new SimpleStringProperty(emailAddress);
+        this.inboxCounter = new SimpleStringProperty("");
+        this.sentCounter = new SimpleStringProperty("");
+        this.trashedCounter = new SimpleStringProperty("");
     }
 
+    public StringProperty inboxCounterProperty() { return inboxCounter; }
+    public StringProperty sentCounterProperty() { return sentCounter; }
+    public StringProperty trashedCounterProperty() { return trashedCounter; }
+    public void setSentCounter(int value) {
+        sentCounter.setValue(String.valueOf(value));
+    }
+    public void setInboxCounter(int value) {
+        inboxCounter.setValue(String.valueOf(value));
+    }
+    public void setTrashedCounter(int value) {
+        trashedCounter.setValue(String.valueOf(value));
+    }
     public SimpleListProperty<Email> inboxProperty()
     {
         return inbox;
@@ -63,7 +80,11 @@ public class User {
     }
 
     public boolean checkDuplicates(ListProperty<Email> list, Email e) {
-        return list.stream().noneMatch(email -> email.getIdEmail() == e.getIdEmail());
+        for (Email email : list) {
+            if (email.getIdEmail() == e.getIdEmail()) {
+                return false;
+            }
+        }
+        return true;
     }
-
 }

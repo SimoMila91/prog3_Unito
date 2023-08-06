@@ -126,7 +126,9 @@ public class MailServerController {
                 Response response;
                 switch (request.getRequest()) {
                     case "getAll" -> {
+                        System.out.println("get ALl request");
                         response = (Response) sendAllEmails(request.getEmailAddress());
+                        System.out.println(response);
                         objectOutputStream.writeObject(response);
                         objectOutputStream.flush();
                     }

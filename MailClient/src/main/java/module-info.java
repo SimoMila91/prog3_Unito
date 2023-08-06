@@ -2,6 +2,7 @@ module com.prog.client.mailclient {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.json;
+    requires de.jensd.fx.glyphs.fontawesome;
 
 
     opens com.prog.client.mailclient to javafx.fxml;

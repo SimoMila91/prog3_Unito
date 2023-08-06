@@ -52,6 +52,8 @@ public class ClientController {
     @FXML
     private Button btnDelete;
     @FXML
+    private Button btnForward;
+    @FXML
     private ListView<Email> listEmails;
     @FXML
     private Button inboxBtn;
@@ -73,34 +75,62 @@ public class ClientController {
 
     private String sectionName = "inbox";
 
-    private int newInbox = 0;
 
 
     public void initializeClient(String usr) {
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
-        // new user
+        listEmails.setCellFactory(param -> new ListCell<Email>() {
+            @Override
+            protected void updateItem(Email email, boolean empty) {
+                super.updateItem(email, empty);
+                if (empty || email == null) {
+                    setText(null);
+                } else {
+                    if (sectionName.equals("inbox")) {
+                        String text;
+                        if (!email.isRead()) {
+                            text = email.toString() + " - NEW";
+                        } else {
+                            text = email.toString();
+                        }
+                        setText(text);
+                    } else {
+                        setText(email.toString());
+                    }
+                }
+            }
+        });
+
         model = new User(usr);
-
-
         lblUsername.textProperty().bind(model.emailAddressProperty());
-        bindList(model.inboxProperty());
-
+        sentCount.textProperty().bind(model.sentCounterProperty());
+        inboxCount.textProperty().bind(model.inboxCounterProperty());
+        trashedCount.textProperty().bind(model.trashedCounterProperty());
         model.emptyEmail = null;
-        if (model.inboxProperty().size() > 0) {
+
+        boolean res = allFromServer();
+        if (res) {
+            bindList(model.inboxProperty());
             sectionName = "inbox";
             model.selectedEmail = model.inboxProperty().get(0);
             updateDetailView(model.selectedEmail);
-            inboxBtn.setDisable(true);
+            inboxBtn.setStyle(" -fx-background-color: #CAC9D2;\n" + " -fx-background-radius: 5px;");
         } else {
             updateDetailView(model.emptyEmail);
+            Alert a = new Alert(Alert.AlertType.INFORMATION, "No received emails to display at the moment.");
+            a.show();
         }
         handleTimerLoadEmails(true);
+
     }
+
+
 
     private void bindList(ListProperty<Email> list) {
         listEmails.itemsProperty().bind(list);
+        listEmails.getSelectionModel().selectFirst();
         listEmails.setOnMouseClicked(this::showSelectedEmail);
     }
 
@@ -111,9 +141,7 @@ public class ClientController {
             bindList(model.inboxProperty());
             model.selectedEmail = model.inboxProperty().get(0);
             updateDetailView(model.selectedEmail);
-            inboxBtn.setDisable(true);
-            sentBtn.setDisable(false);
-            trashedBtn.setDisable(false);
+            activeBtnHandle(sectionName);
         }
     }
 
@@ -124,9 +152,7 @@ public class ClientController {
             bindList(model.sentProperty());
             model.selectedEmail = model.sentProperty().get(0);
             updateDetailView(model.selectedEmail);
-            inboxBtn.setDisable(false);
-            sentBtn.setDisable(true);
-            trashedBtn.setDisable(false);
+            activeBtnHandle("sent");
         }
     }
 
@@ -137,9 +163,30 @@ public class ClientController {
             model.selectedEmail = model.trashedProperty().get(0);
             bindList(model.trashedProperty());
             updateDetailView(model.selectedEmail);
-            inboxBtn.setDisable(false);
-            sentBtn.setDisable(false);
-            trashedBtn.setDisable(true);
+            activeBtnHandle(sectionName);
+        }
+    }
+
+    private void activeBtnHandle(String section) {
+        switch (section) {
+            case "inbox" -> {
+                inboxBtn.setStyle(" -fx-background-color: #CAC9D2;\n" +
+                        " -fx-background-radius: 5px;");
+                sentBtn.setStyle(null);
+                trashedBtn.setStyle(null);
+            }
+            case "sent" -> {
+                sentBtn.setStyle(" -fx-background-color: #CAC9D2;\n" +
+                                 " -fx-background-radius: 5px;");
+                inboxBtn.setStyle(null);
+                trashedBtn.setStyle(null);
+            }
+            case "trashed" -> {
+                trashedBtn.setStyle(" -fx-background-color: #CAC9D2;\n" +
+                        " -fx-background-radius: 5px;");
+                inboxBtn.setStyle(null);
+                sentBtn.setStyle(null);
+            }
         }
     }
 
@@ -181,7 +228,7 @@ public class ClientController {
     }
 
     private void handleNewStage(String btnClicked) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("newEmail.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/prog/client/mailclient/newEmail.fxml"));
         Parent root = loader.load();
         NewEmailController newController = loader.getController();
         newController.initializeNewController(model, this, btnClicked); //passing controller and model
@@ -251,35 +298,49 @@ public class ClientController {
         stage.close();
     }
 
+    private boolean checkUnreadMails() {
+        boolean unread = false;
+        for (Email e: model.inboxProperty()) {
+            if (!e.isRead()) {
+                unread = true;
+                break;
+            }
+        }
+        return unread;
+    }
+
     @FXML
     void showSelectedEmail(MouseEvent mouseEvent) {
         Email email = listEmails.getSelectionModel().getSelectedItem();
         model.selectedEmail = email;
-        if (!model.selectedEmail.isRead()) {
-            model.selectedEmail.setRead(true);
-            newInbox--;
-            Request request = new Request(
-                    "setRead",
-                    model.emailAddressProperty().get(),
-                    new SerializableEmail(model.selectedEmail)
-            );
-            openConnection();
-            sendEmail(request);
-            try {
-                Response response = getServerResponse();
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            } finally {
-                closeConnection();
+        updateDetailView(email);
+
+        /*  case inbox => check if read or not   */
+        if (sectionName.equals("inbox")) {
+            if (!model.selectedEmail.isRead()) {
+                model.selectedEmail.setRead(true);
+                Request request = new Request(
+                        "setRead",
+                        model.emailAddressProperty().get(),
+                        new SerializableEmail(model.selectedEmail)
+                );
+
+                openConnection();
+                sendEmail(request);
+                try {
+                    Response response = getServerResponse();
+                    System.out.println(response);
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    closeConnection();
+                }
             }
-            if (newInbox > 0) {
-                Platform.runLater(() -> txtNewInbox.setText("New -> " +  String.valueOf(newInbox)));
-            } else {
-                Platform.runLater(() -> txtNewInbox.setText(""));
+            if (!checkUnreadMails()) {
+                Platform.runLater(() -> txtNewInbox.setVisible(false));
             }
 
         }
-        updateDetailView(email);
     }
 
     public void updateDetailView(Email email) {
@@ -340,99 +401,113 @@ public class ClientController {
     *   The server will be notified.
     *
      */
-    protected void allFromServer() {
+    protected boolean allFromServer() {
+        boolean response = false;
         try {
             Request request;
-            long lastInbox;
-
-            if (model.inboxProperty().isEmpty() && model.sentProperty().isEmpty() && model.trashedProperty().isEmpty()) {
-                request = new Request(
-                        "getAll",
-                        model.emailAddressProperty().get()
-                );
-            } else {
-                lastInbox = model.inboxProperty().get(model.inboxProperty().size() - 1).getIdEmail();
-
-                request = new Request(
-                        "update",
-                        model.emailAddressProperty().get(),
-                        lastInbox
-                );
-            }
+            int newInbox = 0;
+            request = new Request(
+                    "getAll",
+                    model.emailAddressProperty().get()
+            );
 
             openConnection();
             sendEmail(request);
             Response res = getServerResponse();
             if (res.isSuccess()) {
-
-                if (res.getMessage().equals("getAll")) {
-                    ArrayList<Email> inbox = new ArrayList<>();
-                    ArrayList<Email> sent = new ArrayList<>();
-                    ArrayList<Email> trashed = new ArrayList<>();
-                    if (!res.getInbox().isEmpty()) {
-                        for (SerializableEmail sEmail : res.getInbox()) {
-                            Email e = new Email(sEmail);
-                            inbox.add(e);
-                        }
-                        for (Email e : inbox) {
-                            if (model.checkDuplicates(model.inboxProperty(), e) && !e.isRead()) {
-                                newInbox++;
-                                Platform.runLater(() -> model.inboxProperty().add(e));
-                            }
-                        }
+                ArrayList<Email> inbox = new ArrayList<>();
+                ArrayList<Email> sent = new ArrayList<>();
+                ArrayList<Email> trashed = new ArrayList<>();
+                if (!res.getInbox().isEmpty()) {
+                    response = true;
+                    System.out.println(res.getInbox().size());
+                    System.out.println(res.getInbox());
+                    for (SerializableEmail sEmail : res.getInbox()) {
+                        Email e = new Email(sEmail);
+                        inbox.add(e);
                     }
-                    if (!res.getSent().isEmpty()) {
-                        for (SerializableEmail sEmail : res.getSent()) {
-                            Email e = new Email(sEmail);
-                            sent.add(e);
-                        }
-                        for (Email e : sent) {
-                            if (model.checkDuplicates(model.sentProperty(), e)) {
-                                Platform.runLater(() -> model.sentProperty().add(e));
-                            }
-                        }
-                    }
-                    if (!res.getTrashed().isEmpty()) {
-                        for (SerializableEmail sEmail : res.getTrashed()) {
-                            Email e = new Email(sEmail);
-                            trashed.add(e);
-                        }
-                        for (Email e : trashed) {
-                            if (model.checkDuplicates(model.trashedProperty(), e)) {
-                                Platform.runLater(() -> model.trashedProperty().add(e));
-                            }
-                        }
-                    }
-
-                    if (newInbox > 0) {
-                        Platform.runLater(() ->   txtNewInbox.setText("New -> " + String.valueOf(newInbox)));
-                    } else {
-                        Platform.runLater(() ->   txtNewInbox.setText(""));
-                    }
-
-                }
-
-                if (res.getMessage().equals("update")) {
-                    ArrayList<Email> inbox = new ArrayList<>();
-                    if (res.getInbox() != null) { /* there are new emails */
-                        for (SerializableEmail sEmail : res.getInbox()) {
+                    for (Email e : inbox) {
+                        System.out.println(e.isRead());
+                        if (!e.isRead()) {
                             newInbox++;
-                            Email e = new Email(sEmail);
-                            inbox.add(e);
                         }
-                        for (Email e : inbox) {
-                            Platform.runLater(() -> model.inboxProperty().add(e));
-                        }
-
-                        if (newInbox > 0) {
-                            Platform.runLater(() ->   txtNewInbox.setText("New -> " + String.valueOf(newInbox)));
-                        } else {
-                            Platform.runLater(() ->   txtNewInbox.setText(""));
-                        }
+                        model.inboxProperty().add(e);
                     }
                 }
+                if (!res.getSent().isEmpty()) {
+                    for (SerializableEmail sEmail : res.getSent()) {
+                        Email e = new Email(sEmail);
+                        sent.add(e);
+                    }
+                    for (Email e : sent) {
+                        model.sentProperty().add(e);
+                    }
+                }
+                if (!res.getTrashed().isEmpty()) {
+                    for (SerializableEmail sEmail : res.getTrashed()) {
+                        Email e = new Email(sEmail);
+                        trashed.add(e);
+                    }
+                    for (Email e : trashed) {
+                        model.trashedProperty().add(e);
+                    }
+                }
+                final int newMail = newInbox;
+                Platform.runLater(() -> {
+                    model.setTrashedCounter(model.trashedProperty().size());
+                    model.setSentCounter(model.sentProperty().size());
+                    model.setInboxCounter(model.inboxProperty().size());
+                    newMailHandler(newMail);
+                });
             } else {
                 Alert a = new Alert(Alert.AlertType.ERROR, res.getMessage());
+                a.show();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        } finally {
+            closeConnection();
+        }
+        return response;
+    }
+    protected void updateFromServer() {
+        try {
+
+            Request request;
+            int newInbox = 0;
+            long lastInbox = model.inboxProperty().isEmpty() ? 0 : model.inboxProperty().get(model.inboxProperty().size() - 1).getIdEmail();
+
+            request = new Request(
+                    "update",
+                    model.emailAddressProperty().get(),
+                    lastInbox
+            );
+            openConnection();
+            sendEmail(request);
+            Response res = getServerResponse();
+            if (res.isSuccess()) {
+                ArrayList<Email> inbox = new ArrayList<>();
+                if (res.getInbox() != null) { /* there are new emails */
+                    for (SerializableEmail sEmail : res.getInbox()) {
+                        newInbox = newInbox +1 ;
+                        Email e = new Email(sEmail);
+                        inbox.add(e);
+                    }
+                    for (Email e : inbox) {
+                        Platform.runLater(() -> model.inboxProperty().add(e));
+                    }
+                }
+                final int newMail = newInbox;
+                Platform.runLater(() -> {
+                    model.setTrashedCounter(model.trashedProperty().size());
+                    model.setSentCounter(model.sentProperty().size());
+                    model.setInboxCounter(model.inboxProperty().size());
+                    newMailHandler(newMail);
+                });
+            } else {
+                Alert a = new Alert(Alert.AlertType.ERROR, res.getMessage());
+                a.show();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -442,10 +517,16 @@ public class ClientController {
         }
     }
 
+    private void newMailHandler(int newInbox) {
+        if (newInbox >= 1 && !txtNewInbox.isVisible()) {
+            txtNewInbox.setVisible(true);
+        }
+    }
+
     public void handleTimerLoadEmails(boolean open) {
         if (open && scheduledExecutorService == null) {
             scheduledExecutorService = Executors.newScheduledThreadPool(1);
-            scheduledExecutorService.scheduleAtFixedRate(new emailDownload(), 0, 5, TimeUnit.SECONDS);
+            scheduledExecutorService.scheduleAtFixedRate(new emailDownload(), 5, 5, TimeUnit.SECONDS);
             System.out.println("ok schedule timer");
         } else if (!open && scheduledExecutorService != null) {
             scheduledExecutorService.shutdown();
@@ -456,7 +537,7 @@ public class ClientController {
         public emailDownload() {}
         @Override
         public void run() {
-            allFromServer();
+            updateFromServer();
         }
     }
 

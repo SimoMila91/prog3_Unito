@@ -1,15 +1,16 @@
 .client-navbar {
-    -fx-background-color: #132a13 !important;
+    -fx-background-color: #30343f !important;
     -fx-font-weight: 600;
     -fx-border-style: hidden hidden solid hidden !important;
-    -fx-border-color: black;
+    -fx-border-color: #30343f;
     -fx-border-width: 1px;
 }
 
 .client-container {
     -fx-border-style: solid;
-    -fx-border-color: black;
+    -fx-border-color: #000;
     -fx-border-width: 1px;
+    -fx-background-color: #fff;
 }
 
 .new-mail-cont {
@@ -28,6 +29,22 @@
     -fx-border-style: hidden hidden solid hidden;
     -fx-border-color: #132a13;
     -fx-border-width: 2px;
+}
+
+.btn-menu-active {
+    -fx-background-color: #CAC9D2;
+    -fx-background-radius: 5px;
+}
+
+.btn {
+    -fx-background-color: none;
+    -fx-border-color: #000;
+    -fx-border-radius: 5px;
+}
+
+.btn:hover {
+    -fx-background-color: #CAC9D2;
+    -fx-background-radius: 5px;
 }
 
 
