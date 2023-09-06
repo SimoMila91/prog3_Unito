@@ -194,13 +194,14 @@ public class MailServerController {
 
         private Response setEmailRead(Request request) {
             try {
+                long idEmailRequest = request.getLastInbox();
                 SerializableEmail email = (SerializableEmail) request.getEmail();
 
                 User user = server.getUser(request.getEmailAddress());
 
                 boolean found = false;
                 for (int i = 0; i < user.getInbox().size() && !found; i++) {
-                    if (user.getInbox().get(i).getIdEmail() ==  email.getIdEmail()) {
+                    if (user.getInbox().get(i).getIdEmail() ==  idEmailRequest) {
                         user.getInbox().get(i).setRead(true);
                         found = true;
                     }

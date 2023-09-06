@@ -322,7 +322,7 @@ public class ClientController {
                 Request request = new Request(
                         "setRead",
                         model.emailAddressProperty().get(),
-                        new SerializableEmail(model.selectedEmail)
+                        model.selectedEmail.getIdEmail()
                 );
 
                 openConnection();

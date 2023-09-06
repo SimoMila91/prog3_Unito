@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="642.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prog.client.mailclient.controllers.client.NewEmailController">
-   <TextField fx:id="txtTo" layoutX="178.0" layoutY="52.0" prefHeight="26.0" prefWidth="516.0" />
-   <TextField fx:id="txtSubject" layoutX="178.0" layoutY="91.0" prefHeight="26.0" prefWidth="516.0" />
+<AnchorPane prefHeight="642.0" prefWidth="990.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.prog.client.mailclient.controllers.client.NewEmailController">
+   <TextField fx:id="txtTo" layoutX="178.0" layoutY="52.0" prefHeight="26.0" prefWidth="694.0" />
+   <TextField fx:id="txtSubject" layoutX="178.0" layoutY="91.0" prefHeight="26.0" prefWidth="694.0" />
    <Label layoutX="78.0" layoutY="56.0" text="To" />
    <Label layoutX="78.0" layoutY="95.0" text="Subject" />
    <TextArea fx:id="bodyMail" layoutX="26.0" layoutY="150.0" prefHeight="388.0" prefWidth="944.0" />
    <HBox alignment="CENTER_RIGHT" layoutX="531.0" layoutY="538.0" prefHeight="100.0" prefWidth="459.0">
-      <Button mnemonicParsing="false" onAction="#handleClose" prefHeight="36.0" prefWidth="104.0" text="Close" textFill="#0d0d0d">
+      <Button mnemonicParsing="false" onAction="#handleClose" prefHeight="36.0" prefWidth="104.0" style="-fx-background-color: #c44536;" text="Close" textFill="WHITE">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -24,10 +24,13 @@
             <Insets right="20.0" />
          </HBox.margin>
       </Button>
-      <Button mnemonicParsing="false" onAction="#sendBtnClick" prefHeight="37.0" prefWidth="110.0" text="Send">
+      <Button mnemonicParsing="false" onAction="#sendBtnClick" prefHeight="37.0" prefWidth="110.0" style="-fx-background-color: #2a6f97;" text="Send" textFill="WHITE">
          <HBox.margin>
             <Insets right="20.0" />
          </HBox.margin>
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
       </Button>
    </HBox>
 </AnchorPane>
