@@ -46,7 +46,9 @@ public class Server {
 
     // request from client
     public synchronized void addRequest(String request) {
-        Platform.runLater(() -> logs.setValue(logs.getValue() + request));
+        String currentText = logs.getValue();
+        String newText = request + currentText;
+        Platform.runLater(() -> logs.setValue(newText));
     }
 
     public ArrayList<SerializableEmail> getNewInbox(User user, long lastFromClient) {
